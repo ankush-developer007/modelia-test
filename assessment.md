@@ -44,6 +44,13 @@ Keyboard-friendly navigation, focus states, and ARIA roles.
 Responsive layout that works well on desktop and mobile.
 Show clear error messages and disabled states during network calls.
 
+
+
+
+
+
+
+
 2. BACKEND (Node.js + TypeScript + Express/Fastify + DB)
 Authentication
 JWT-based auth with /auth/signup and /auth/login.
