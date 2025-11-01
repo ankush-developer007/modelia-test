@@ -26,10 +26,10 @@ describe('Generate Flow', () => {
     // Setup auth
     const mockUser = { id: 1, email: 'test@example.com' };
     const mockToken = 'mock-token';
-    authService.getAuthData = vi.fn(() => ({
+    vi.mocked(authService.getAuthData).mockReturnValue({
       token: mockToken,
       user: mockUser,
-    }));
+    });
   });
 
   it('renders generation form', async () => {

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import multer from 'multer';
 
 export interface AppError extends Error {
   statusCode?: number;
@@ -6,13 +7,32 @@ export interface AppError extends Error {
 }
 
 export function errorHandler(
-  err: AppError,
-  req: Request,
+  err: AppError | multer.MulterError,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void {
-  const statusCode = err.statusCode || 500;
-  const status = err.status || 'error';
+  // Handle multer errors
+  if (err.name === 'MulterError') {
+    const multerErr = err as multer.MulterError;
+    res.status(400).json({
+      status: 'error',
+      error: multerErr.message || 'File upload error',
+    });
+    return;
+  }
+
+  // Handle file validation errors (from multer fileFilter)
+  if (err.message && (err.message.includes('Invalid file type') || err.message.includes('file type'))) {
+    res.status(400).json({
+      status: 'error',
+      error: err.message,
+    });
+    return;
+  }
+
+  const statusCode = (err as AppError).statusCode || 500;
+  const status = (err as AppError).status || 'error';
 
   res.status(statusCode).json({
     status,
@@ -24,7 +44,7 @@ export function errorHandler(
 export function notFoundHandler(
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void {
   res.status(404).json({
     status: 'error',

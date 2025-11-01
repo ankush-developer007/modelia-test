@@ -17,9 +17,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Load auth data from localStorage on mount
-    const { user: savedUser } = getAuthData();
-    if (savedUser) {
-      setUserState(savedUser);
+    try {
+      const authData = getAuthData();
+      if (authData && authData.user) {
+        setUserState(authData.user);
+      }
+    } catch (error) {
+      // Handle errors in test environment or when localStorage is not available
+      console.warn('Failed to load auth data:', error);
     }
   }, []);
 
