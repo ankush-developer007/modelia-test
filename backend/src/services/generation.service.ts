@@ -5,7 +5,6 @@ import * as path from 'path';
 import * as crypto from 'crypto';
 
 const UPLOAD_DIR = process.env.UPLOAD_DIR || './uploads';
-const MAX_FILE_SIZE = parseInt(process.env.MAX_FILE_SIZE || '10485760', 10);
 
 // Ensure upload directory exists
 if (!fs.existsSync(UPLOAD_DIR)) {

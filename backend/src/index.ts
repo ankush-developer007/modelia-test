@@ -35,21 +35,25 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 // Initialize database and start server
-async function startServer() {
-  try {
-    await initializeDatabase();
-    console.log('Database initialized');
+// Only start server if not in Jest test mode
+// Allow webServer (Playwright) and direct execution to start the server
+if (!process.env.JEST_WORKER_ID) {
+  async function startServer() {
+    try {
+      await initializeDatabase();
+      console.log('Database initialized');
 
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    } catch (error) {
+      console.error('Failed to start server:', error);
+      process.exit(1);
+    }
   }
-}
 
-startServer();
+  startServer();
+}
 
 export default app;
 

@@ -19,6 +19,12 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('AuthForm', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    // Mock getAuthData to return null user by default
+    vi.mocked(authService.getAuthData).mockReturnValue({ token: null, user: null });
+  });
+
   it('renders signup form', () => {
     render(
       <BrowserRouter>

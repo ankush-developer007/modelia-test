@@ -8,7 +8,6 @@ import {
   createUser,
 } from '../services/auth.service';
 import { AuthRequest, SignupRequest, LoginRequest } from '../types';
-import { AppError } from '../middleware/error.middleware';
 
 // Validation schemas
 const signupSchema = z.object({
